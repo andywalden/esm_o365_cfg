@@ -1,6 +1,9 @@
 
-Usage Example - note the status change on selection.
+Usage Example 
 ----------------------------------------------------
+- Note the change of status after a number is entered.
+******************************************************
+
     ============================================================
     This script will enable or disable Office 365 subscriptions.
     ============================================================
