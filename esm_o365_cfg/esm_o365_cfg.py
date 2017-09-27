@@ -32,12 +32,6 @@ def login(tenant_id, client_key, secret_key):
         secret_key (str): Accessible only one time after the 
                            App has been registered
     """
-    params = {}
-    params['client_id'] = client_key
-    params['grant_type'] = 'client_credentials'
-    params['client_id'] = client_key
-    params['client_secret'] = secret_key
-    data = urlencode(params)
     headers = {'Content-Type': 'application/x-www-form-urlencoded'}
     auth_url = 'https://login.microsoftonline.com/{}/oauth2/token'.format(tenant_id)
     resource = 'https://manage.office.com'
@@ -85,7 +79,7 @@ def set_sub_status(tenant_id, headers, ctype_stat):
                  '/activity/feed/subscriptions/{}'
                  '?contentType={}'.format(tenant_id, action, ctype_stat[0]))
     status = requests.post(sub_url, headers=headers, verify=False)
-        
+    
 def main():
             
     print('=' * 60)
@@ -97,19 +91,19 @@ def main():
             'Properties and labeled "Directory ID".\nExample: '
             'cb6997bf-4029-455f-9f7a-e76fee8881da\n'))
     tenant_id = get_info('Enter Tenant ID: ')
-    
             
     print(('\nThe Client Key is available after app registration and labeled "Application ID"'
             'App Registrations | <ESM App Name> | Application ID'
             '\nExample: '
             '553dd2ba-251b-47d5-893d-2f7ab26adf19\n'))
     client_key = get_info('Enter Client Key: ')
-
+    
     print(('\nThe Secret Key is accessible only one time after the App has been registered:'
             '\nExample: '
             'D8perHbL9gAqx4vx5YbuffCDsvz2Pbdswey72FYRDNk=\n'))
     secret_key = get_info("Enter Secret Key: ")
-
+    secret_key = secret_key.replace('+', '%2B')
+    
     headers = login(tenant_id, client_key, secret_key)
 
     c = OrderedDict()
@@ -125,7 +119,7 @@ def main():
             try:
                 for s in status:
                     c[s['contentType']] = s['status']
-            except KeyError:
+            except (KeyError, TypeError):
                 print('Error: ', status['error']['message'])
                 sys.exit(1)
             
@@ -147,7 +141,6 @@ def main():
             break
         else:
             continue
-
 
 if __name__ == "__main__":
     try:
