@@ -1,3 +1,4 @@
+The latest release is available for download at: https://github.com/andywalden/esm_o365_cfg/releases/latest
 
 Usage Example 
 ----------------------------------------------------
